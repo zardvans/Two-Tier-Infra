@@ -1,0 +1,17 @@
+Build Image
+podman build ./t1 -t t1_img
+podman build ./t2 -t t2_img
+
+Run Container
+podman run -d --user www-data --name t1_ctr --env TZ=Asia/Singapore -v ./t1/config/usr/local/etc/php/php.ini:/usr/local/etc/php/php.ini -v ./t1/config/usr/local/etc/php/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini -v ./t1/config/apache2/apache2.conf:/etc/apache2/apache2.conf -v ./t1/config/apache2/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf -v ./t1/config/apache2/sites-available/default-ssl.conf:/etc/apache2/sites-available/default-ssl.conf -v ./t1/config/tmp/xdebug-trace:/tmp/xdebug-trace -v ./tools:/var/www/html/tools -v ./t1/src:/var/www/html -p 3080:3080 -p 3043:3043 -p 9003:9003 t1_img
+podman run -d --user www-data --name t2_ctr --env TZ=Asia/Singapore -v ./t2/config/usr/local/etc/php/php.ini:/usr/local/etc/php/php.ini -v ./t2/config/usr/local/etc/php/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini -v ./t2/config/apache2/apache2.conf:/etc/apache2/apache2.conf -v ./t2/config/apache2/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf -v ./t2/config/apache2/sites-available/default-ssl.conf:/etc/apache2/sites-available/default-ssl.conf -v ./t2/config/tmp/xdebug-trace:/tmp/xdebug-trace -v ./tools:/var/www/html/tools -v ./t2/src:/var/www/html -p 5080:5080 -p 5043:5043 -p 9004:9003 t2_img
+
+Delete all Container
+podman container rm --all
+
+Delete all Image
+podman image rm --all
+
+See container log
+podman logs t1_ctr
+podman logs t2_ctr
