@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  t1:
+    image: t1_img
+    build:
+      context: ./t1
+      dockerfile: Dockerfile
+    container_name: t1_ctr
+    user: www-data
+    environment:
+      - TZ=Asia/Singapore
+    volumes:
+      - ./t1/config/usr/local/etc/php/php.ini:/usr/local/etc/php/php.ini
+      - ./t1/config/usr/local/etc/php/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ./t1/config/apache2/apache2.conf:/etc/apache2/apache2.conf
+      - ./t1/config/apache2/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./t1/config/apache2/sites-available/default-ssl.conf:/etc/apache2/sites-available/default-ssl.conf
+      - ./t1/config/tmp/xdebug-trace:/tmp/xdebug-trace
+      - ./tools:/var/www/html/tools
+      - ./t1/src:/var/www/html
+    ports:
+      - "3080:3080"
+      - "3043:3043"
+      - "9003:9003"
+
+  t2:
+    image: t2_img
+    build:
+      context: ./t2
+      dockerfile: Dockerfile
+    container_name: t2_ctr
+    user: www-data
+    environment:
+      - TZ=Asia/Singapore
+    volumes:
+      - ./t2/config/usr/local/etc/php/php.ini:/usr/local/etc/php/php.ini
+      - ./t2/config/usr/local/etc/php/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ./t2/config/apache2/apache2.conf:/etc/apache2/apache2.conf
+      - ./t2/config/apache2/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./t2/config/apache2/sites-available/default-ssl.conf:/etc/apache2/sites-available/default-ssl.conf
+      - ./t2/config/tmp/xdebug-trace:/tmp/xdebug-trace
+      - ./tools:/var/www/html/tools
+      - ./t2/src:/var/www/html
+    ports:
+      - "5080:5080"
+      - "5043:5043"
+      - "9004:9003"
